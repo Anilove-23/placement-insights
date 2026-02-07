@@ -1,38 +1,42 @@
 import Mailgen from 'mailgen'
 import nodemailer from 'nodemailer'
-import {ApiError} from '../utils/ApiError.js'
+import { ApiError } from '../utils/ApiError.js'
+
+
+const mailGenerator = new Mailgen({
+    theme: "default",
+    product: {
+        name: "PlaceWise",
+        link: "https://yourapp.com"
+    }
+});
+
+const transporter = nodemailer.createTransport({
+    host: process.env.MAILTRAP_HOST,
+    port: Number(process.env.MAILTRAP_PORT),
+    auth: {
+        user: process.env.MAILTRAP_USER,
+        pass: process.env.MAILTRAP_PASS
+    }
+})
 
 const sendEmail = async function (options) {
-    const mailGenerator = new Mailgen({
-        theme: "default",
-        product: {
-            name: "PlaceWise",
-            link: "https://yourapp.com"
-        }
-    });
 
     const emailHtml = mailGenerator.generate(options.mailgenContent);
     const emailTextual = mailGenerator.generatePlaintext(options.mailgenContent)
 
-    const transporter = nodemailer.createTransport({
-        host: process.env.MAILTRAP_HOST,
-        port: Number(process.env.MAILTRAP_PORT),
-        auth: {
-            user: process.env.MAILTRAP_USER,
-            pass: process.env.MAILTRAP_PASS
-        }
-    })
+
 
     try {
         await transporter.sendMail({
-        from: '"PlaceWise" <placewise@placewise.com>',
-        to: options.email,
-        subject: options.subject,
-        html: emailHtml,
-        text : emailTextual
-    });
+            from: '"PlaceWise" <placewise@placewise.com>',
+            to: options.email,
+            subject: options.subject,
+            html: emailHtml,
+            text: emailTextual
+        });
     } catch (err) {
-        throw new ApiError(503,"Something went wrong while sending mail !!! Try again later")
+        throw new ApiError(503, "Something went wrong while sending mail !!! Try again later")
     }
 }
 
@@ -55,4 +59,4 @@ const generateMailGenContent = (username, link) => {
 }
 
 
-export {sendEmail}
+export { sendEmail ,mailgenContent}
