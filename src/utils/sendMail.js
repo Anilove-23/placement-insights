@@ -58,5 +58,27 @@ const generateMailGenContent = (username, link) => {
     }
 }
 
+const generateForgotPasswordContent = (username, link) => {
+  return {
+    body: {
+      name: username,
+      intro: "We received a request to reset your PlaceWise account password 🔐",
+      action: {
+        instructions: "Click the button below to reset your password:",
+        button: {
+          color: "#FF5733",
+          text: "Reset Password",
+          link,
+        },
+      },
+      outro: [
+        "This password reset link will expire in 10 minutes.",
+        "If you did not request a password reset, you can safely ignore this email."
+      ],
+    },
+  };
+};
 
-export { sendEmail ,mailgenContent}
+
+
+export { sendEmail ,mailgenContent,generateForgotPasswordContent}
