@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import {User} from '../models/users.models.js'
 
 const verifyJwt = asyncHandler(async function (req,res,next) {
-    const token = req.cookies?.accessToken || rreq.headers.authorization?.replace("Bearer ", "").replace("bearer ", "")
+    const token = req.cookies?.accessToken || req.headers.authorization?.replace("Bearer ", "").replace("bearer ", "")
     if(!token) throw new ApiError(401,"INVALID TOKEN")
 
     const decoded = jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
@@ -19,3 +19,4 @@ const verifyJwt = asyncHandler(async function (req,res,next) {
     next()
 })
 
+export {verifyJwt}
