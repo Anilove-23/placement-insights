@@ -68,4 +68,4 @@ const studentProfileSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-export default mongoose.model("StudentProfile", studentProfileSchema);
+export const StudentProfile = mongoose.model("StudentProfile", studentProfileSchema);
